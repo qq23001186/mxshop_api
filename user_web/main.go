@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"web_api/user_web/global"
 	"web_api/user_web/initialize"
+	"web_api/user_web/utils"
 
 	"github.com/gin-gonic/gin/binding"
 	ut "github.com/go-playground/universal-translator"
@@ -27,6 +29,16 @@ func main() {
 
 	//5. 初始化srv的连接
 	initialize.InitSrvConn()
+
+	viper.AutomaticEnv()
+	//如果是本地开发环境端口号固定，线上环境启动获取端口号
+	debug := viper.GetBool("DEV_CONFIG")
+	if !debug {
+		port, err := utils.GetFreePort()
+		if err == nil {
+			global.ServerConfig.Port = port
+		}
+	}
 
 	//注册验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
