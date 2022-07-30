@@ -15,6 +15,6 @@ func Routers() *gin.Engine {
 	ApiGroup := Router.Group("/u/v1")
 
 	router.InitUserRouter(ApiGroup)
-	router.InitBaseRouter(ApiGroup)
+	//router.InitBaseRouter(ApiGroup) // 测试的时候先过滤掉图片验证码和ali短信验证
 	return Router
 }

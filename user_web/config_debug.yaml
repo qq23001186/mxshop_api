@@ -3,6 +3,7 @@ port: '8081'
 user_srv:
   host: '127.0.0.1'
   port: '50051'
+  name: 'user_srv'
 jwt:
   key: 'VYLDYq3&hGWjWqF$K1ih'
 sms:
@@ -12,3 +13,6 @@ sms:
 redis:
   host: '192.168.124.51'
   port: '6379'
+consul:
+  host: '192.168.124.51'
+  port: '8500'

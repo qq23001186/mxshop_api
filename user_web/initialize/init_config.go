@@ -19,9 +19,9 @@ func GetEnvInfo(env string) bool {
 func InitConfig() {
 	debug := GetEnvInfo("DEV_CONFIG")
 	configFilePrefix := "config"
-	configFileName := fmt.Sprintf("%s_pro.yaml", configFilePrefix)
+	configFileName := fmt.Sprintf("user_web/%s_pro.yaml", configFilePrefix)
 	if debug {
-		configFileName = fmt.Sprintf("%s_debug.yaml", configFilePrefix)
+		configFileName = fmt.Sprintf("user_web/%s_debug.yaml", configFilePrefix)
 	}
 
 	v := viper.New()
@@ -39,9 +39,9 @@ func InitConfig() {
 	//viper的功能 - 动态监控变化
 	v.WatchConfig()
 	v.OnConfigChange(func(e fsnotify.Event) {
-		zap.S().Infof("配置文件产生变化: &s", e.Name)
+		zap.S().Infof("配置文件产生变化: %s", e.Name)
 		_ = v.ReadInConfig()
 		_ = v.Unmarshal(&global.ServerConfig)
-		zap.S().Infof("配置信息: &v", global.ServerConfig)
+		zap.S().Infof("配置信息: %v", global.ServerConfig)
 	})
 }
