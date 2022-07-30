@@ -1,0 +1,14 @@
+name: 'user-web'
+port: '8081'
+user_srv:
+  host: '127.0.0.1'
+  port: '50051'
+jwt:
+  key: 'VYLDYq3&hGWjWqF$K1ih'
+sms:
+  key: ''
+  secrect: ''
+  expire: 300
+redis:
+  host: '192.168.124.51'
+  port: '6379'
