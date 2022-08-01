@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+	"web_api/goods_web/utils/register/consul"
 
 	"web_api/goods_web/global"
 	"web_api/goods_web/initialize"
@@ -33,6 +34,15 @@ func main() {
 		if err == nil {
 			global.ServerConfig.Port = port
 		}
+	}
+
+	regClient := new RegistryClient
+
+	registerClient := consul.NewRegistryClient(global.ServerConfig.ConsulInfo.Host, global.ServerConfig.ConsulInfo.Port)
+	serviceId := fmt.Sprintf("%s", uuid.NewV4())
+	err := registerClient.Register(global.ServerConfig.Host, global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	if err != nil {
+		zap.S().Panic("服务注册失败:", err.Error())
 	}
 
 	/*

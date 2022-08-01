@@ -9,6 +9,7 @@ require (
 	github.com/hashicorp/consul/api v1.12.0
 	github.com/mbobakov/grpc-consul-resolver v1.4.4
 	github.com/nacos-group/nacos-sdk-go v1.1.1
+	github.com/satori/go.uuid v1.2.0
 	go.uber.org/zap v1.21.0
 	google.golang.org/protobuf v1.28.0
 )
