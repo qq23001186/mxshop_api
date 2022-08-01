@@ -32,8 +32,8 @@ func main() {
 
 	viper.AutomaticEnv()
 	//如果是本地开发环境端口号固定，线上环境启动获取端口号
-	debug := viper.GetBool("DEV_CONFIG")
-	if !debug {
+	flag := viper.GetInt("DEV_CONFIG")
+	if flag > 4 { // 1=zsz  2=comp  3=home
 		port, err := utils.GetFreePort()
 		if err == nil {
 			global.ServerConfig.Port = port

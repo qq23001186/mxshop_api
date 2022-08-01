@@ -13,18 +13,20 @@ import (
 	"web_api/user_web/global"
 )
 
-func GetEnvInfo(env string) bool {
+func GetEnvInfo(env string) int {
 	viper.AutomaticEnv()
-	return viper.GetBool(env)
+	return viper.GetInt(env)
 	//刚才设置的环境变量 想要生效 我们必须得重启goland
 }
 
 func InitConfig() {
-	debug := GetEnvInfo("DEV_CONFIG")
+	flag := GetEnvInfo("DEV_CONFIG") // 1=zsz  2=comp  3=home
 	configFilePrefix := "config"
-	configFileName := fmt.Sprintf("user_web/%s_pro.yaml", configFilePrefix)
-	if debug {
-		configFileName = fmt.Sprintf("user_web/%s_debug.yaml", configFilePrefix)
+	configFileName := fmt.Sprintf("user_web/%s_zsz.yaml", configFilePrefix)
+	if flag == 2 {
+		configFileName = fmt.Sprintf("user_web/%s_comp.yaml", configFilePrefix)
+	} else if flag == 3 {
+		configFileName = fmt.Sprintf("user_web/%s_home.yaml", configFilePrefix)
 	}
 
 	v := viper.New()
