@@ -2,10 +2,15 @@ package main
 
 import (
 	"fmt"
+	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
+	"os"
+	"os/signal"
+	"syscall"
 	"web_api/user_web/global"
 	"web_api/user_web/initialize"
 	"web_api/user_web/utils"
+	"web_api/user_web/utils/register/consul"
 
 	"github.com/gin-gonic/gin/binding"
 	ut "github.com/go-playground/universal-translator"
@@ -51,6 +56,14 @@ func main() {
 		})
 	}
 
+	//服务注册
+	registerClient := consul.NewRegistryClient(global.ServerConfig.ConsulInfo.Host, global.ServerConfig.ConsulInfo.Port)
+	serviceId := fmt.Sprintf("%s", uuid.NewV4())
+	err := registerClient.Register(global.ServerConfig.Host, global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	if err != nil {
+		zap.S().Panic("服务注册失败:", err.Error())
+	}
+
 	/*
 		1. S()可以获取一个全局的sugar，可以让我们自己设置一个全局的logger
 		2. 日志是分级别的，debug， info ， warn， error， fetal
@@ -59,9 +72,18 @@ func main() {
 			NewDevelopment默认日志级别为debug
 		3. S函数和L函数很有用， 提供了一个全局的安全访问logger的途径
 	*/
-	zap.S().Debugf("启动服务器， 端口: %d", global.ServerConfig.Port)
-
+	zap.S().Debugf("启动服务器, 端口： %d", global.ServerConfig.Port)
 	if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
 		zap.S().Panic("启动失败:", err.Error())
+	}
+
+	//接收终止信号
+	quit := make(chan os.Signal)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	if err = registerClient.DeRegister(serviceId); err != nil {
+		zap.S().Info("注销失败:", err.Error())
+	} else {
+		zap.S().Info("注销成功:")
 	}
 }
