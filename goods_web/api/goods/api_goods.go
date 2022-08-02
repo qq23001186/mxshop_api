@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"web_api/goods_web/forms"
 	"web_api/goods_web/global"
 	"web_api/goods_web/proto"
 )
@@ -145,4 +146,35 @@ func List(ctx *gin.Context) {
 	reMap["data"] = goodsList
 
 	ctx.JSON(http.StatusOK, reMap)
+}
+
+func New(ctx *gin.Context) {
+	goodsForm := forms.GoodsForm{}
+	if err := ctx.ShouldBindJSON(&goodsForm); err != nil {
+		HandleValidatorError(ctx, err)
+		return
+	}
+	goodsClient := global.GoodsSrvClient
+	rsp, err := goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsInfo{
+		Name:            goodsForm.Name,
+		GoodsSn:         goodsForm.GoodsSn,
+		Stocks:          goodsForm.Stocks,
+		MarketPrice:     goodsForm.MarketPrice,
+		ShopPrice:       goodsForm.ShopPrice,
+		GoodsBrief:      goodsForm.GoodsBrief,
+		ShipFree:        *goodsForm.ShipFree,
+		Images:          goodsForm.Images,
+		DescImages:      goodsForm.DescImages,
+		GoodsFrontImage: goodsForm.FrontImage,
+		CategoryId:      goodsForm.CategoryId,
+		BrandId:         goodsForm.Brand,
+	})
+	if err != nil {
+		HandleGrpcErrorToHttp(err, ctx)
+		return
+	}
+
+	//如何设置库存
+	//TODO 商品的库存 - 分布式事务
+	ctx.JSON(http.StatusOK, rsp)
 }
