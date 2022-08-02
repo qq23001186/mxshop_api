@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"github.com/spf13/viper"
 	"os"
 	"os/signal"
