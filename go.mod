@@ -6,6 +6,7 @@ require (
 	github.com/go-playground/locales v0.14.0
 	github.com/go-playground/universal-translator v0.18.0
 	github.com/go-playground/validator/v10 v10.10.0
+	github.com/golang/protobuf v1.5.2
 	github.com/hashicorp/consul/api v1.12.0
 	github.com/mbobakov/grpc-consul-resolver v1.4.4
 	github.com/nacos-group/nacos-sdk-go v1.1.1
@@ -26,7 +27,6 @@ require (
 	github.com/go-playground/form v3.1.4+incompatible // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.2.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
