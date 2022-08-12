@@ -12,6 +12,7 @@ var (
 	ServerConfig *config.ServerConfig = &config.ServerConfig{}
 	NacosConfig  *config.NacosConfig  = &config.NacosConfig{}
 
-	GoodsSrvClient proto.GoodsClient
-	OrderSrvClient proto.OrderClient
+	GoodsSrvClient     proto.GoodsClient
+	OrderSrvClient     proto.OrderClient
+	InventorySrvClient proto.InventoryClient
 )
