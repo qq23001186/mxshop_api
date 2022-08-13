@@ -11,7 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	myvalidator "web_api/user_web/validator"
+	myvalidator "web_api/order_web/validator"
 
 	"web_api/order_web/global"
 	"web_api/order_web/initialize"
