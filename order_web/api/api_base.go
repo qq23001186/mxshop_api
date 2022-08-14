@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 	"google.golang.org/grpc/codes"
@@ -25,15 +26,15 @@ func HandleGrpcErrorToHttp(err error, c *gin.Context) {
 				})
 			case codes.InvalidArgument:
 				c.JSON(http.StatusBadRequest, gin.H{
-					"msg": "参数错误",
+					"msg": e.Message(),
 				})
 			case codes.Unavailable:
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "用户服务不可用",
+					"msg": "服务不可用",
 				})
 			default:
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": e.Code(),
+					"msg": fmt.Sprintf("%s%s", e.Code(), e.Message()),
 				})
 			}
 			return
