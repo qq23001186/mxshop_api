@@ -2,7 +2,8 @@ package goods
 
 import (
 	"context"
-	"fmt"
+	sentinel "github.com/alibaba/sentinel-golang/api"
+	"github.com/alibaba/sentinel-golang/core/base"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
@@ -14,7 +15,7 @@ import (
 )
 
 func List(ctx *gin.Context) {
-	fmt.Println("商品列表")
+	//fmt.Println("商品列表")
 	//商品的列表
 	//////////////////////////////////////////// 根据前端的请求参数构造request对象
 	request := &proto.GoodsFilterRequest{}
@@ -51,6 +52,14 @@ func List(ctx *gin.Context) {
 	brandIdInt, _ := strconv.Atoi(brandId)
 	request.Brand = int32(brandIdInt)
 
+	e, b := sentinel.Entry("goods-list", sentinel.WithTrafficType(base.Inbound))
+	if b != nil {
+		ctx.JSON(http.StatusTooManyRequests, gin.H{
+			"msg": "请求过于频繁，请稍后重试",
+		})
+		return
+	}
+
 	////////////////////////////////////////////请求商品的service服务
 	r, err := global.GoodsSrvClient.GoodsList(context.WithValue(context.Background(), "ginContext", ctx), request)
 	if err != nil {
@@ -58,6 +67,8 @@ func List(ctx *gin.Context) {
 		api.HandleGrpcErrorToHttp(err, ctx)
 		return
 	}
+
+	e.Exit()
 
 	reMap := map[string]interface{}{
 		"total": r.Total,
