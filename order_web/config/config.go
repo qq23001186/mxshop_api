@@ -21,6 +21,12 @@ type AlipayConfig struct {
 	ReturnURL    string `mapstructure:"return_url" json:"return_url"`
 }
 
+type JaegerConfig struct {
+	Host string `mapstructure:"host" json:"host"`
+	Port int    `mapstructure:"port" json:"port"`
+	Name string `mapstructure:"name" json:"name"`
+}
+
 type ServerConfig struct {
 	Name             string       `mapstructure:"name" json:"name"`
 	Host             string       `mapstructure:"host" json:"host"`
@@ -32,6 +38,7 @@ type ServerConfig struct {
 	JWTInfo          JWTConfig    `mapstructure:"jwt" json:"jwt"`
 	ConsulInfo       ConsulConfig `mapstructure:"consul" json:"consul"`
 	AliPayInfo       AlipayConfig `mapstructure:"alipay" json:"alipay"`
+	JaegerInfo       JaegerConfig `mapstructure:"consul" json:"jaeger"`
 }
 
 type NacosConfig struct {

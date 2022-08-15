@@ -101,7 +101,7 @@ func New(ctx *gin.Context) {
 		return
 	}
 	goodsClient := global.GoodsSrvClient
-	rsp, err := goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsInfo{
+	rsp, err := goodsClient.CreateGoods(context.WithValue(context.Background(), "ginContext", ctx), &proto.CreateGoodsInfo{
 		Name:            goodsForm.Name,
 		GoodsSn:         goodsForm.GoodsSn,
 		Stocks:          goodsForm.Stocks,
@@ -174,7 +174,7 @@ func Delete(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteGoods(context.Background(), &proto.DeleteGoodsInfo{Id: int32(i)})
+	_, err = global.GoodsSrvClient.DeleteGoods(context.WithValue(context.Background(), "ginContext", ctx), &proto.DeleteGoodsInfo{Id: int32(i)})
 	if err != nil {
 		api.HandleGrpcErrorToHttp(err, ctx)
 		return
@@ -204,7 +204,7 @@ func UpdateStatus(ctx *gin.Context) {
 
 	id := ctx.Param("id")
 	i, err := strconv.ParseInt(id, 10, 32)
-	if _, err = global.GoodsSrvClient.UpdateGoods(context.Background(), &proto.CreateGoodsInfo{
+	if _, err = global.GoodsSrvClient.UpdateGoods(context.WithValue(context.Background(), "ginContext", ctx), &proto.CreateGoodsInfo{
 		Id:     int32(i),
 		IsHot:  *goodsStatusForm.IsHot,
 		IsNew:  *goodsStatusForm.IsNew,
@@ -227,7 +227,7 @@ func Update(ctx *gin.Context) {
 
 	id := ctx.Param("id")
 	i, err := strconv.ParseInt(id, 10, 32)
-	if _, err = global.GoodsSrvClient.UpdateGoods(context.Background(), &proto.CreateGoodsInfo{
+	if _, err = global.GoodsSrvClient.UpdateGoods(context.WithValue(context.Background(), "ginContext", ctx), &proto.CreateGoodsInfo{
 		Id:              int32(i),
 		Name:            goodsForm.Name,
 		GoodsSn:         goodsForm.GoodsSn,

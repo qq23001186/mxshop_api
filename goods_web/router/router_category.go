@@ -3,10 +3,11 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"web_api/goods_web/api/category"
+	"web_api/goods_web/middlewares"
 )
 
 func InitCategoryRouter(Router *gin.RouterGroup) {
-	CategoryRouter := Router.Group("categorys")
+	CategoryRouter := Router.Group("categorys").Use(middlewares.Trace())
 	{
 		CategoryRouter.GET("", category.List)          // 商品类别列表页
 		CategoryRouter.DELETE("/:id", category.Delete) // 删除分类
