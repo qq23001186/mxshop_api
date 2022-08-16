@@ -32,12 +32,12 @@ func (r *Registry) Register(address string, port int, name string, tags []string
 		panic(err)
 	}
 	//生成对应的检查对象
-	check := &api.AgentServiceCheck{
-		HTTP:                           fmt.Sprintf("http://%s:%d/health", address, port),
-		Timeout:                        "5s",
-		Interval:                       "5s",
-		DeregisterCriticalServiceAfter: "10s",
-	}
+	//check := &api.AgentServiceCheck{
+	//	HTTP:                           fmt.Sprintf("http://%s:%d/health", address, port),
+	//	Timeout:                        "5s",
+	//	Interval:                       "5s",
+	//	DeregisterCriticalServiceAfter: "10s",
+	//}
 
 	//生成注册对象
 	registration := new(api.AgentServiceRegistration)
@@ -46,7 +46,25 @@ func (r *Registry) Register(address string, port int, name string, tags []string
 	registration.Port = port
 	registration.Tags = tags
 	registration.Address = address
-	registration.Check = check
+	//registration.Check = check
+
+	//reg := &api.AgentServiceRegistration{
+	//	Name: name,
+	//	ID:   id,
+	//	Tags: tags,
+	//	TaggedAddresses: map[string]api.ServiceAddress{
+	//		"lan": {
+	//			Address: address,
+	//			Port:    port,
+	//		},
+	//	},
+	//	Port: port,
+	//	Check: &api.AgentServiceCheck{
+	//		TTL:                            "10s",
+	//		Timeout:                        "15s",
+	//		DeregisterCriticalServiceAfter: "10s",
+	//	},
+	//}
 
 	err = client.Agent().ServiceRegister(registration)
 	if err != nil {

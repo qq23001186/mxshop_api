@@ -7,6 +7,7 @@ import (
 )
 
 func InitGoodsRouter(Router *gin.RouterGroup) {
+	//GoodsRouter := Router.Group("goods").Use(middlewares.JWTAuth()).Use(middlewares.Trace())
 	GoodsRouter := Router.Group("goods").Use(middlewares.Trace())
 	{
 		GoodsRouter.GET("", goods.List) //商品列表

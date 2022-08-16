@@ -23,6 +23,7 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		//token = strings.Split(token, " ")[1] //kong的jwt验证
 		j := NewJWT()
 		// parseToken 解析token包含的信息
 		claims, err := j.ParseToken(token)

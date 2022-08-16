@@ -36,6 +36,7 @@ func main() {
 	viper.AutomaticEnv()
 	//如果是本地开发环境端口号固定，线上环境启动获取端口号
 	flag := viper.GetInt("DEV_CONFIG")
+	//flag = 5      // 这里为了测试kong的负载均衡
 	if flag > 4 { // 1=zsz  2=comp  3=home
 		port, err := utils.GetFreePort()
 		if err == nil {
